@@ -1,1 +1,1 @@
-from .Module import Module
+from .Module import Module, deep_see
