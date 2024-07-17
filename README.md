@@ -12,3 +12,8 @@ Currently supports ds.nn (Beta, Use with Caution)
 3) Data Storage with TimescaleDB (and maybe PostgreSQL if you can't do non-time stamp data in TimescaleDB)\\
 4) FastAPI\\
 4) React Typescript front-end
+
+
+## Order of development
+1) Get TimescaleDB up and running
+2) Get MVP analytics
