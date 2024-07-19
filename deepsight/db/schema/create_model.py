@@ -1,9 +1,11 @@
 from sqlalchemy import create_engine, Column, Integer, String, Text, MetaData, Table, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 
-from original import Base, User, DATABASE_URL, MAX_USERNAME_PASSWORD_LEN
+from config import Base, DATABASE_URI
+from schema.create_user import User
 
-engine = create_engine(DATABASE_URL)
+
+engine = create_engine(DATABASE_URI)
 
 
 class Model(Base):
