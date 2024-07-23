@@ -7,6 +7,7 @@ from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
 
 from config.db import DATABASE_URI
+from db.schema import TrainingStatus
 
 engine = create_engine(DATABASE_URI)
 
@@ -20,16 +21,10 @@ session = Session()
 
 app = FastAPI()
 
-class TrainingStatus(Enum):
-    TRAINING = "training"
-    FAILED = "failing"
-    COMPLETE = "complete"
-
-
 class NewModel(BaseModel):
     name: str
     description: str = None
-    hyper_params: Dict[str, Any]
+    hyperparameters: Dict[str, Any]
     status: TrainingStatus
 
 class ExistingModel(BaseModel):
