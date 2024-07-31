@@ -3,7 +3,7 @@
 # Set the default values
 HOST="127.0.0.1"
 PORT="8000"
-RELOAD="false"
+RELOAD="true"
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, Text, MetaData, Table, ForeignKey, Enum, DateTime, func
+from sqlalchemy import Column, Integer, Text, MetaData, Table, ForeignKey, Enum, DateTime, func, UniqueConstraint
 import enum
 
 Base = declarative_base()
@@ -24,7 +24,9 @@ class Hyperparameter(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Text, nullable=False)
     type = Column(Text, nullable=False)
+
     models = relationship('ModelHyperparameter', back_populates='hyperparameter')
+    __table_args__ = (UniqueConstraint('name', 'type', name='_hyperparameter_uc'),)
 
 class ModelHyperparameter(Base):
     __tablename__ = 'model_hyperparameter'
