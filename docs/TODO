@@ -1,0 +1,3 @@
+- [ ] Work on custom .ds file type, each file should correspond with a model. (Maybe have a yaml file for configs)
+- [ ] Once ds file engine is working, then remove postgres from codebase.
+- [ ] Figure out API (fastAPI seems unneccessary) and front-end (React seems nice honestly so might be worth keeping that)
