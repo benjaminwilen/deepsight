@@ -1,0 +1,2 @@
+* For compression, store weight changes using deltas
+* Look into check sums for weight files

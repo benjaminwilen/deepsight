@@ -30,9 +30,9 @@ $(LIBFILE): $(BUILDDIR)/compress.o
 	@mkdir -p $(LIBDIR)
 	$(CXX) -shared -o $(LIBFILE) $(BUILDDIR)/compress.o
 
-$(BUILDDIR)/mylibrary.o: $(SRCDIR)/mylibrary.cpp $(HEADERS)
+$(BUILDDIR)/compress.o: $(SRCDIR)/compress.cpp $(HEADERS)
 	@mkdir -p $(BUILDDIR)
-	$(CXX) $(CXXFLAGS) -I$(SRCDIR) -c $(SRCDIR)/mylibrary.cpp -o $(BUILDDIR)/mylibrary.o
+	$(CXX) $(CXXFLAGS) -I$(SRCDIR) -c $(SRCDIR)/compress.cpp -o $(BUILDDIR)/compress.o
 
 clean:
 	rm -rf $(BUILDDIR) $(LIBDIR) $(TARGET)
