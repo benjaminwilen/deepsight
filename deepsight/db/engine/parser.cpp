@@ -1,5 +1,5 @@
 // File for parsing a .ds weights file
-#include "mylibrary.h"
+#include "cpp_utils.h"
 
 #include <string>
 #include <iostream>
@@ -20,3 +20,12 @@ std::string parse_header(const std::fstream& filePath) {
     
 } 
 
+cpp_utils::FileStreamWrapper read_weights_file(const std::string& filePath) {
+    cpp_utils::FileStreamWrapper inputFile("example.txt");
+
+    if (inputFile.is_open()) {
+        return inputFile;
+    } else {
+        throw std::runtime_error("Failed to open the file.");
+    } 
+} 
