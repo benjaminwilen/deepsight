@@ -1,12 +1,24 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, MetaData, Table, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy import create_engine
 
-from config.db import DATABASE_URI
+from deepsight.config.db import DATABASE_URI
 
-from db.schema import Base, Model, Hyperparameter, ModelHyperparameter
+from deepsight.db.schema import (
+    Base,
+    Model,
+    Hyperparameter,
+    ModelHyperparameter,
+    ModelInstance,
+)
 
 engine = create_engine(DATABASE_URI)
 
 
-
-Base.metadata.create_all(engine, tables=[Model.__table__, Hyperparameter.__table__, ModelHyperparameter.__table__])
+Base.metadata.create_all(
+    engine,
+    tables=[
+        Model.__table__,
+        Hyperparameter.__table__,
+        ModelInstance.__table__,
+        ModelHyperparameter.__table__,
+    ],
+)
