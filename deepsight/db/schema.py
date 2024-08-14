@@ -70,6 +70,6 @@ class ModelHyperparameter(Base):
     hyperparameter = relationship("Hyperparameter", back_populates="model_instances")
 
 
-# class Weights(Base):
-# __tablename__ = 'weights'
-# weights_id
+class Weights(Base):
+    __tablename__ = "weights"
+    id = Column(Integer, primary_key=True, autoincrement=True)
