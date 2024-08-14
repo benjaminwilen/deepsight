@@ -60,6 +60,7 @@ class Hyperparameter(Base):
 
 class ModelHyperparameter(Base):
     __tablename__ = "model_hyperparameter"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     model_id = Column(Integer, ForeignKey("model.id"), primary_key=True)
     hyperparameter_id = Column(
         Integer, ForeignKey("hyperparameter.id"), primary_key=True
@@ -68,6 +69,12 @@ class ModelHyperparameter(Base):
 
     model_instance = relationship("ModelInstance", back_populates="hyperparameters")
     hyperparameter = relationship("Hyperparameter", back_populates="model_instances")
+
+    __table_args__ = (
+        UniqueConstraint(
+            "model_id", "hyperparameter_id", name="uix_model_hyperparameter"
+        ),
+    )
 
 
 class Weights(Base):
