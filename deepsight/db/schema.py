@@ -6,11 +6,14 @@ from sqlalchemy import (
     Integer,
     Text,
     ForeignKey,
+    Boolean,
     Enum,
     DateTime,
     func,
     UniqueConstraint,
 )
+
+from sqlalchemy.dialects.postgresql import JSONB
 
 Base = declarative_base()
 
@@ -25,6 +28,7 @@ class Model(Base):
     __tablename__ = "model"
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Text)
+    description = Column(Text)
     created_at = Column(DateTime, default=func.now(), nullable=False)
     updated_at = Column(
         DateTime, default=func.now(), onupdate=func.now(), nullable=False
@@ -36,7 +40,7 @@ class Model(Base):
 class ModelInstance(Base):
     __tablename__ = "model_instance"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    model_id = Column(Integer, ForeignKey("model.id"), primary_key=True)
+    model_id = Column(Integer, ForeignKey("model.id"))
     training_status = Column(Enum(TrainingStatus), nullable=False)
     created_at = Column(DateTime, default=func.now(), nullable=False)
 
@@ -61,10 +65,8 @@ class Hyperparameter(Base):
 class ModelHyperparameter(Base):
     __tablename__ = "model_hyperparameter"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    model_id = Column(Integer, ForeignKey("model.id"), primary_key=True)
-    hyperparameter_id = Column(
-        Integer, ForeignKey("hyperparameter.id"), primary_key=True
-    )
+    model_id = Column(Integer, ForeignKey("model.id"))
+    hyperparameter_id = Column(Integer, ForeignKey("hyperparameter.id"))
     value = Column(Text, nullable=False)
 
     model_instance = relationship("ModelInstance", back_populates="hyperparameters")
@@ -80,3 +82,9 @@ class ModelHyperparameter(Base):
 class Weights(Base):
     __tablename__ = "weights"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    weights = Column(JSONB, nullable=False)
+    model_instance = Column(Integer, ForeignKey("model_instance.id"))
+    iteration = Column(Integer, nullable=False)
+    is_inference_weights = Column(
+        Column(Boolean, nullable=False, default=False)
+    )  # most recent weights

@@ -8,6 +8,7 @@ from deepsight.db.schema import (
     Hyperparameter,
     ModelHyperparameter,
     ModelInstance,
+    Weights,
 )
 
 engine = create_engine(DATABASE_URI)
@@ -20,5 +21,6 @@ Base.metadata.create_all(
         Hyperparameter.__table__,
         ModelInstance.__table__,
         ModelHyperparameter.__table__,
+        Weights.__table__,
     ],
 )
