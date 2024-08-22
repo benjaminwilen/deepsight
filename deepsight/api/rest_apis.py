@@ -15,7 +15,10 @@ engine = create_engine(DATABASE_URI)
 
 metadata = MetaData()
 model_table = Table("model", metadata, autoload_with=engine)
-# address_table = Table('addresses', metadata, autoload_with=engine)
+model_instance_table = Table("addresses", metadata, autoload_with=engine)
+hyperparameter_table = Table()
+model_hyperparameter_table = 
+weights_table = 
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -26,7 +29,7 @@ app = FastAPI()
 
 class NewHyperparameter(BaseModel):
     """
-    Used for the creation of a hyperparameter in association with a new model instance
+    Used for the creation of a hyperparameter in association with a new model instance (mostly for create purposes)
     """
 
     name: str
@@ -36,7 +39,7 @@ class NewHyperparameter(BaseModel):
 
 class NewModel(BaseModel):
     """
-    Represents a newly created model
+    Represents a newly created model (mostly for create purposes)
     """
 
     name: str
@@ -45,7 +48,7 @@ class NewModel(BaseModel):
 
 class NewModelInstance(BaseModel):
     """
-    Represents a newly created model instance
+    Represents a newly created model instance (mostly for create purposes)
     """
 
     model_id: int
@@ -55,24 +58,61 @@ class NewModelInstance(BaseModel):
 
 class NewWeights(BaseModel):
     """
-    Represents a snapshot of a model instance's weights
+    Represents a snapshot of a model instance's weights (mostly for create purposes)
     """
 
     model_instance: int
     weights: Any
 
 
+class ExistingHyperparameter(BaseModel):
+    """
+    Used for the creation of a hyperparameter in association with a new model instance (mostly for read purposes)
+    """
+
+    hyperparameter_id: int
+    name: str
+    value: str
+    type: str
+
+
 class ExistingModel(BaseModel):
+    """
+    Represents a model that exists in database (mostly for read purposes)
+    """
+
     model_id: int
     name: str
     description: str = None
-    hyperparameters: Dict[str, Any]
+
+
+class ExistingModelInstance(BaseModel):
+    """
+    Represents a model instance that exists in database (mostly for read purposes)
+    """
+
+    model_instance_id: int
+    model_id: int
+    hyperparameters: List[ExistingHyperparameter]
     training_status: TrainingStatus
+
+
+class ExistingWeights(BaseModel):
+    """
+    Represents a snapshot of a model instance's weights (mostly for read purposes)
+    """
+
+    weights_id: int
+    model_instance: int
+    weights: Any
 
 
 @app.get("/model/")
 def read_models():
-    return "HERE2"
+    """
+    Get all models
+    """
+
     query = session.query(model_table.c.id, model_table.c.name).all()
     return "HERE"
     return {model.c.id: ExistingModel.model_validate(model) for model in query}
