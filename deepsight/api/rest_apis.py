@@ -8,17 +8,19 @@ from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
 
-from config.db import DATABASE_URI
-from db.schema import TrainingStatus, Hyperparameter
+from deepsight.config.db import DATABASE_URI
+from deepsight.db.schema import TrainingStatus, Hyperparameter
 
 engine = create_engine(DATABASE_URI)
 
 metadata = MetaData()
 model_table = Table("model", metadata, autoload_with=engine)
-model_instance_table = Table("addresses", metadata, autoload_with=engine)
-hyperparameter_table = Table()
-model_hyperparameter_table = 
-weights_table = 
+model_instance_table = Table("model_instance", metadata, autoload_with=engine)
+hyperparameter_table = Table("hyperparameter", metadata, autoload_with=engine)
+model_hyperparameter_table = Table(
+    "model_hyperparameter", metadata, autoload_with=engine
+)
+weights_table = Table("weights", metadata, autoload_with=engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -108,14 +110,17 @@ class ExistingWeights(BaseModel):
 
 
 @app.get("/model/")
-def read_models():
+def read_models() -> Dict[str, Any]:
     """
     Get all models
     """
 
-    query = session.query(model_table.c.id, model_table.c.name).all()
-    return "HERE"
-    return {model.c.id: ExistingModel.model_validate(model) for model in query}
+    query = session.query(
+        model_table.c.id, model_table.c.name, model_table.description
+    ).all()
+    return {
+        "data": {model.c.id: ExistingModel.model_validate(model) for model in query}
+    }
 
 
 @app.get("/model/{model_id}")
